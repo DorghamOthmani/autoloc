@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,4 +25,7 @@ public class Client {
     private String telephone;
     private String numPermis;
     private LocalDate dateInscription;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
+    private Set<Reservation> reservations = new HashSet<>();
 }

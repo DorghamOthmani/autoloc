@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,4 +32,12 @@ public class Vehicule {
 
     @Enumerated(EnumType.STRING)
     private StatutVehicule statut;
+
+
+    @ManyToOne
+    private Agence agence;
+
+    @ManyToMany
+    private Set<Equipement> equipements = new HashSet<>();
+
 }
