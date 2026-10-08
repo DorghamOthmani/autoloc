@@ -34,10 +34,10 @@ public class Vehicule {
     private StatutVehicule statut;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Agence agence;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Equipement> equipements = new HashSet<>();
 
 }

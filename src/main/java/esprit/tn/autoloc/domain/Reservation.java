@@ -25,9 +25,9 @@ public class Reservation {
     @ManyToOne
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Vehicule vehicule;
 
-    @OneToOne(mappedBy = "reservation")
+    @OneToOne(mappedBy = "reservation", fetch = FetchType.LAZY)
     private Contrat contrat;
 }

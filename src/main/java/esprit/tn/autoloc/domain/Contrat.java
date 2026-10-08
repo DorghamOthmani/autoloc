@@ -23,9 +23,9 @@ public class Contrat {
     private BigDecimal montantTotal;
     private boolean valide;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Reservation reservation;
 
-    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Paiement> paiements = new HashSet<>();
 }
