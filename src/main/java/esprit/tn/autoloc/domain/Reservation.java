@@ -22,7 +22,7 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private StatutReservation statut;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Client client;
 
     @ManyToOne(fetch = FetchType.LAZY)
