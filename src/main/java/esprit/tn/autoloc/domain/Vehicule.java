@@ -37,7 +37,7 @@ public class Vehicule {
     @ManyToOne(fetch = FetchType.LAZY)
     private Agence agence;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private Set<Equipement> equipements = new HashSet<>();
 
 }

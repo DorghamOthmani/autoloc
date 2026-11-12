@@ -10,4 +10,5 @@ public interface IContratService {
     List<Contrat> findAll();
     void deleteById (Long id);
     Contrat update (Long id, Contrat contrat);
+    Contrat addWithPayments(Contrat contrat);
 }

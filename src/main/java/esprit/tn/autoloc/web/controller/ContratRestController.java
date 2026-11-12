@@ -38,4 +38,8 @@ public class ContratRestController {
     public Contrat update(@PathVariable Long id, @RequestBody Contrat contrat) {
         return contratService.update(id, contrat);
     }
+    @PostMapping("with-payments")
+    public Contrat addWithPayments(@RequestBody Contrat contrat) {
+        return contratService.addWithPayments(contrat);
+    }
 }

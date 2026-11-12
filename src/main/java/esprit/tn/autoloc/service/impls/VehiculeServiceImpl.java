@@ -1,9 +1,15 @@
 package esprit.tn.autoloc.service.impls;
 
+import esprit.tn.autoloc.domain.Agence;
+import esprit.tn.autoloc.domain.Contrat;
+import esprit.tn.autoloc.domain.Equipement;
 import esprit.tn.autoloc.domain.Vehicule;
 import esprit.tn.autoloc.exception.ResourceNotFoundException;
+import esprit.tn.autoloc.repository.IAgenceRepository;
+import esprit.tn.autoloc.repository.IEquipementRepository;
 import esprit.tn.autoloc.repository.IVehiculeRepository;
 import esprit.tn.autoloc.service.IVehiculeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +21,8 @@ import java.util.List;
 public class VehiculeServiceImpl implements IVehiculeService {
 
     private final IVehiculeRepository vehiculeRepository;
-
+    private final IAgenceRepository agenceRepository;
+    private final IEquipementRepository equipementRepository;
     @Override
     public Vehicule create(Vehicule vehicule) {
         if (vehicule.getIdVehicule() != null) {
@@ -54,6 +61,37 @@ public class VehiculeServiceImpl implements IVehiculeService {
         existant.setTarifJournalier(vehicule.getTarifJournalier());
         existant.setStatut(vehicule.getStatut());
         return vehiculeRepository.save(existant);
+    }
+
+    @Override
+    public Vehicule assignAgence(Long idVehicule, Long idAgence) {
+        Vehicule vehicule = findById(idVehicule);
+        Agence agence = agenceRepository.findById(idAgence).orElseThrow(() -> new ResourceNotFoundException("Agence", idAgence));
+        vehicule.setAgence(agence);
+        return vehiculeRepository.save(vehicule);
+    }
+
+    @Override
+    public Vehicule assignEquipement(Long idVehicule, Long idEquipement) {
+        Vehicule vehicule = findById(idVehicule);
+        Equipement equipement = equipementRepository.findById(idEquipement).orElseThrow(() -> new ResourceNotFoundException("Equipement", idEquipement));
+        vehicule.getEquipements().add(equipement);
+        return vehiculeRepository.save(vehicule);
+    }
+    @Override
+    public void unassignEquipement(Long idVehicule, Long idEquipement) {
+        Vehicule vehicule = findById(idVehicule);
+        Equipement equipement = equipementRepository.findById(idEquipement).orElseThrow(() -> new ResourceNotFoundException("Equipement", idEquipement));
+        vehicule.getEquipements().remove(equipement);
+        vehiculeRepository.save(vehicule);
+    }
+
+    @Transactional
+    @Override
+    public Vehicule addVehiculeAndAssignAgence(Vehicule vehicule, Long idAgence) {
+        Agence agence = agenceRepository.findById(idAgence).orElseThrow(() -> new ResourceNotFoundException("Agence", idAgence));
+        vehicule.setAgence(agence);
+        return create(vehicule);
     }
 
     private void verifier(Vehicule vehicule) {
